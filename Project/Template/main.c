@@ -145,11 +145,23 @@ int main(void)
       CAN_ITConfig(CAN1, CAN_IT_FMP0, DISABLE);
       if(distance_vaild_flag==TRUE)
       {
-          //USART_SendData(USART1,0x08);  
-          Delay(100);
+         USART_SendData(USART1,0xde);  
+          while((USART1->SR&0X40)==0)
+        {
+          ;
+        }  
          // USART_SendData(USART1,0xaa);// distance data valid
-          Delay(100);
+          
           USART_SendData(USART1,y_dir);// distance data valid
+           while((USART1->SR&0X40)==0)
+        {
+          ;
+        }  
+          USART_SendData(USART1,(int)x_bias);// distance data valid
+           while((USART1->SR&0X40)==0)
+        {
+          ;
+        }  
 //          if(y_dir==0x00)
 //          {
 //            Delay(100);
@@ -173,9 +185,24 @@ int main(void)
       }
       else
       {
-          //USART_SendData(USART1,0x08);
-          Delay(100);
-          USART_SendData(USART1,y_dir);// distance data invalid
+          
+        USART_SendData(USART1,0xde);  
+        while((USART1->SR&0X40)==0)
+        {
+          ;
+        }
+          
+        USART_SendData(USART1,y_dir);// distance data valid
+        while((USART1->SR&0X40)==0)
+        {
+          ;
+        }  
+        
+        USART_SendData(USART1,(int)x_bias);// distance data valid//USART_SendData(USART1,0x08);
+        while((USART1->SR&0X40)==0)
+        {
+          ;
+        }
       }
       Delay(100);
       //USART_SendData(USART1,(uint16_t)y_bias);
@@ -340,12 +367,7 @@ void NVIC_Configuration(void)
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);
   
-  /* Enable the USART2 Interrupt */
- NVIC_InitStructure.NVIC_IRQChannel =  USART3_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;	
- NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure);
+ 
   
      NVIC_InitStructure.NVIC_IRQChannel = CAN1_RX0_IRQn;
   NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;	
@@ -359,24 +381,24 @@ void NVIC_Configuration(void)
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);*/
   
-     NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn ;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;	
- NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure);
-  
-      NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn ;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;	
- NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure);
-
-  NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn ;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;	
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 4;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure);
-  
+//     NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn ;
+//  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;	
+// NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;
+//  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//  NVIC_Init(&NVIC_InitStructure);
+//  
+//      NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn ;
+//  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;	
+// NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
+//  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//  NVIC_Init(&NVIC_InitStructure);
+//
+//  NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn ;
+//  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;	
+//  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 4;
+//  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//  NVIC_Init(&NVIC_InitStructure);
+//  
 }
 u32 GetTIM_Period(u8 n)////input 10 times bigger
 {

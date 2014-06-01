@@ -226,8 +226,9 @@ void CAN1_RX0_IRQHandler(void)
              {
                
                y_dir=(y_dir|(1<<7));
-               x_bias =(RxMessage.Data[0]>>6);
-               if(RxMessage.Data[1]==0x01)////x bais
+               x_bias =(RxMessage.Data[0]);
+                
+               if(RxMessage.Data[1]==0x01)////x bais direction
                {
                   y_dir=(y_dir|(1<<6));;//
                }
@@ -244,9 +245,9 @@ void CAN1_RX0_IRQHandler(void)
                  
                   
                 }
-               y_bias =(RxMessage.Data[4]>>5);
+               y_bias =(RxMessage.Data[4]>>3);
                
-               y_dir=y_dir|((int)x_bias<<3);
+               //y_dir=y_dir|((int)x_bias<<3);
                y_dir=y_dir|((int)y_bias<<0);
                
                 distance_vaild_flag=TRUE;         
